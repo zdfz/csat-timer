@@ -8,6 +8,7 @@
 //   pm2 save
 // ============================================================
 
+import 'dotenv/config';
 import cron       from 'node-cron';
 import axios      from 'axios';
 import FormData   from 'form-data';
@@ -23,10 +24,10 @@ const __dirname     = path.dirname(fileURLToPath(import.meta.url));
 // ---- Config ----
 const TYPEBOT_API_BASE = 'https://bot.ikb.sa/api/v1';
 const TYPEBOT_ID       = 'cdb3f4rfzq2726dfgmegjrq4';
-const TYPEBOT_TOKEN    = process.env.TYPEBOT_TOKEN    || '3xXvzHfWJOjgkBBLtbGjKSTf';
+const TYPEBOT_TOKEN    = process.env.TYPEBOT_TOKEN;
 const EXPORT_DIR       = process.env.EXPORT_DIR       || 'C:/Users/Abdulrhman/TypebotExports';
-const TG_BOT_TOKEN     = process.env.TG_BOT_TOKEN     || '8642571660:AAHVD6uIu4Kely-Uz4CG8AL2RdYcxLd1SU0';
-const TG_CHAT_ID       = process.env.TG_CHAT_ID       || '1087018718';
+const TG_BOT_TOKEN     = process.env.TG_BOT_TOKEN;
+const TG_CHAT_ID       = process.env.TG_CHAT_ID;
 const NODE_EXE         = process.execPath;
 const PIPELINE_JS      = path.join(__dirname, 'pipeline.js');
 const PAGE_LIMIT       = 100;

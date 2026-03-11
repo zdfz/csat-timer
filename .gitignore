@@ -17,6 +17,9 @@ dist-ssr
 *.csv
 .netlify/
 
+# Local secrets
+.env
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

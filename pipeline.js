@@ -4,6 +4,7 @@
 // Example: node pipeline.js C:\...\results_2026-03-08.csv 2026-03-08
 // ============================================================
 
+import 'dotenv/config';
 import axios from 'axios';
 import XLSX from 'xlsx';
 import * as fs from 'fs';
@@ -13,8 +14,8 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // ---- Config ----
-const STARLINKS_API_KEY  = process.env.STARLINKS_API_KEY  || '399c08024f1f5206d6eef361c1203394d3be9763';
-const SHIPSY_API_KEY     = process.env.SHIPSY_API_KEY     || '969b6e28a73246dec5760c9227f5fc';
+const STARLINKS_API_KEY  = process.env.STARLINKS_API_KEY;
+const SHIPSY_API_KEY     = process.env.SHIPSY_API_KEY;
 const REQUEST_TIMEOUT    = 15000;
 
 // ---- Telegram progress (credentials passed via env from scheduler.js) ----

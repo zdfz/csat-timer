@@ -201,7 +201,7 @@ async function step2(rows, dateLabel) {
 
     const refDate = new Date(dateLabel);
     const dateFrom = new Date(refDate);
-    dateFrom.setDate(dateFrom.getDate() - 2);
+    dateFrom.setDate(dateFrom.getDate() - 1);
     dateFrom.setHours(0, 0, 0, 0);
     const dateTo = new Date(refDate);
     dateTo.setHours(23, 59, 59, 999);

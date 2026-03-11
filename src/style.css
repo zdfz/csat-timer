@@ -1,0 +1,62 @@
+@font-face {
+    font-family: 'Euclid Circular B';
+    src: url('./assets/fonts/Euclid Circular B Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Euclid Circular B';
+    src: url('./assets/fonts/Euclid Circular B Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Euclid Circular B';
+    src: url('./assets/fonts/Euclid Circular B SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Euclid Circular B';
+    src: url('./assets/fonts/Euclid Circular B Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Euclid Circular B';
+    src: url('./assets/fonts/Euclid Circular B Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply font-sans bg-neutral-50 text-neutral-900 antialiased selection:bg-primary-500 selection:text-white;
+    }
+}
+
+@layer components {
+    .btn-primary {
+        @apply px-4 py-2 bg-primary-600 text-white rounded-lg font-medium transition-all duration-200 hover:bg-primary-700 hover:shadow-lg hover:-translate-y-0.5 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+    }
+
+    .btn-secondary {
+        @apply px-4 py-2 bg-white text-neutral-700 border border-neutral-200 rounded-lg font-medium transition-all duration-200 hover:bg-neutral-50 hover:border-neutral-300 active:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed;
+    }
+
+    .card {
+        @apply bg-white rounded-xl border border-neutral-100 shadow-premium p-6 transition-all duration-300;
+    }
+
+    .input-field {
+        @apply w-full px-4 py-2.5 bg-white border border-neutral-200 rounded-lg text-neutral-900 placeholder-neutral-400 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none;
+    }
+}

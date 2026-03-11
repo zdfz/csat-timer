@@ -1,0 +1,36 @@
+name: CSAT Daily Pipeline
+
+on:
+  schedule:
+    - cron: '0 21 * * *'   # 21:00 UTC = midnight Riyadh (UTC+3)
+  workflow_dispatch:        # Allow manual trigger for testing
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install --omit=dev
+
+      - name: Create export directory
+        run: mkdir -p $GITHUB_WORKSPACE/exports
+
+      - name: Run CSAT pipeline
+        env:
+          TYPEBOT_TOKEN:     ${{ secrets.TYPEBOT_TOKEN }}
+          TG_BOT_TOKEN:      ${{ secrets.TG_BOT_TOKEN }}
+          TG_CHAT_ID:        ${{ secrets.TG_CHAT_ID }}
+          STARLINKS_API_KEY: ${{ secrets.STARLINKS_API_KEY }}
+          SHIPSY_API_KEY:    ${{ secrets.SHIPSY_API_KEY }}
+          EXPORT_DIR:        ${{ github.workspace }}/exports
+        run: node scheduler.js --now

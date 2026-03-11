@@ -74,6 +74,25 @@ function toRiyadhTime(utcString) {
     } catch { return ''; }
 }
 
+// Convert Excel date serial → "YYYY-MM-DD HH:MM:SS" in the timezone the string was written.
+// Works correctly whether the pipeline runs on UTC (GitHub Actions) or UTC+3 (local Windows).
+function serialToDatetimeString(serial) {
+    const utcMs  = (serial - 25569) * 86400 * 1000;
+    const localMs = utcMs - new Date(utcMs).getTimezoneOffset() * 60000;
+    return new Date(localMs).toISOString().replace('T', ' ').slice(0, 19);
+}
+
+// Format "YYYY-MM-DD HH:MM:SS" (already Riyadh time) → "Mar 10, 11:47 PM"
+function formatSubmittedAt(s) {
+    if (!s) return '';
+    const m = String(s).match(/^(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2})/);
+    if (!m) return String(s);
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const h24 = +m[4], min = +m[5];
+    const h12 = h24 % 12 || 12;
+    return `${months[+m[2] - 1]} ${+m[3]}, ${h12}:${String(min).padStart(2, '0')} ${h24 < 12 ? 'AM' : 'PM'}`;
+}
+
 async function processBatches(label, items, batchSize, fn) {
     const results = [];
     for (let i = 0; i < items.length; i += batchSize) {
@@ -430,6 +449,13 @@ async function main() {
     const sheet       = workbook.Sheets[workbook.SheetNames[0]];
     const typebotRows = XLSX.utils.sheet_to_json(sheet, { defval: '' });
 
+    // SheetJS auto-converts date strings to Excel serial numbers — convert back to strings
+    for (const row of typebotRows) {
+        if (typeof row['SubmittedAt'] === 'number') {
+            row['SubmittedAt'] = serialToDatetimeString(row['SubmittedAt']);
+        }
+    }
+
     console.log(`\nLoaded ${typebotRows.length} Typebot survey responses`);
 
     if (typebotRows.length === 0) {
@@ -447,8 +473,11 @@ async function main() {
     const s4 = await step4(s3, typebotRows);
     const s5 = await step5(s4);
 
-    // Remove internal fields
-    const finalRows = s5.map(({ _cleanMobile, ...rest }) => rest);
+    // Remove internal fields + format SubmittedAt for display
+    const finalRows = s5.map(({ _cleanMobile, ...rest }) => {
+        if (rest.SubmittedAt) rest.SubmittedAt = formatSubmittedAt(String(rest.SubmittedAt));
+        return rest;
+    });
 
     // Print stats for scheduler.js to parse
     console.log('PIPELINE_STATS:' + JSON.stringify({

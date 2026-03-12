@@ -85,15 +85,15 @@ async function fetchTypebotResults(dateLabel) {
         if (batch.length === 0) break;
 
         for (const r of batch) {
-            const createdRiyadh = toRiyadhDate(r.createdAt);
-            if (createdRiyadh >= dayStart && createdRiyadh <= dayEnd) {
+            const createdAt = new Date(r.createdAt); // UTC — dayStart/dayEnd are already UTC boundaries
+            if (createdAt >= dayStart && createdAt <= dayEnd) {
                 allResults.push(r);
             }
         }
 
-        // Stop paginating once we've passed the start of yesterday
-        const earliestRiyadh = toRiyadhDate(batch[batch.length - 1].createdAt);
-        if (earliestRiyadh < dayStart) break;
+        // Stop paginating once we've passed the start of the target day
+        const earliestCreatedAt = new Date(batch[batch.length - 1].createdAt);
+        if (earliestCreatedAt < dayStart) break;
 
         cursor = resp.data.nextCursor || null;
     } while (cursor);

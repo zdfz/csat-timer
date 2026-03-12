@@ -358,16 +358,16 @@ async function step4(shipmentRows, typebotRows) {
             for (const csat of matches) {
                 results.push({
                     ...shipment,
-                    SubmittedAt:         csat['SubmittedAt']         || '',
-                    NPS:                 csat['NPS']                 || '',
-                    CSAT_Overall:        csat['CSAT_Overall']        || '',
-                    SpeedOfDelivery:     csat['SpeedOfDelivery']     || '',
-                    ShipmentCondition:   csat['ShipmentCondition']   || '',
-                    CourierBehavior:     csat['CourierBehavior']     || '',
-                    COD:                 csat['COD']                 || '',
-                    Verbatim_Improvment: csat['Verbatim_Improvment'] || '',
-                    COD_Verbatim:        csat['COD_Verbatim']        || '',
-                    COD_Issue:           csat['COD_Issue']           || '',
+                    SubmittedAt:         csat['SubmittedAt']         ?? '',
+                    NPS:                 csat['NPS']                 ?? '',
+                    CSAT_Overall:        csat['CSAT_Overall']        ?? '',
+                    SpeedOfDelivery:     csat['SpeedOfDelivery']     ?? '',
+                    ShipmentCondition:   csat['ShipmentCondition']   ?? '',
+                    CourierBehavior:     csat['CourierBehavior']     ?? '',
+                    COD:                 csat['COD']                 ?? '',
+                    Verbatim_Improvment: csat['Verbatim_Improvment'] ?? '',
+                    COD_Verbatim:        csat['COD_Verbatim']        ?? '',
+                    COD_Issue:           csat['COD_Issue']           ?? '',
                 });
             }
         }

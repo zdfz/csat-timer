@@ -473,10 +473,22 @@ async function main() {
     const s4 = await step4(s3, typebotRows);
     const s5 = await step5(s4);
 
-    // Remove internal fields + format SubmittedAt for display
-    const finalRows = s5.map(({ _cleanMobile, ...rest }) => {
-        if (rest.SubmittedAt) rest.SubmittedAt = formatSubmittedAt(String(rest.SubmittedAt));
-        return rest;
+    // Keep only the required columns in the specified order
+    const KEEP_COLS = [
+        'mobile', 'track_number', 'customer_name',
+        'worker_name', 'worker_code', 'worker_phone', 'hub_code',
+        'delivery_date', 'delivery_time',
+        'SubmittedAt', 'NPS', 'CSAT_Overall',
+        'SpeedOfDelivery', 'ShipmentCondition', 'CourierBehavior',
+        'COD', 'Verbatim_Improvment', 'COD_Verbatim', 'COD_Issue',
+    ];
+    const finalRows = s5.map(row => {
+        const out = {};
+        for (const col of KEEP_COLS) {
+            out[col] = row[col] ?? '';
+        }
+        if (out.SubmittedAt) out.SubmittedAt = formatSubmittedAt(String(out.SubmittedAt));
+        return out;
     });
 
     // Print stats for scheduler.js to parse
